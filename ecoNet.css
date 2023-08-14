@@ -1,0 +1,166 @@
+
+.logo {
+    width: 100px;
+    position: relative;
+  }
+
+  p, span, nav, .secciones, h2, h3{
+    color:rgb(78, 36, 27);
+     /* font-family:'Roboto', sans-serif !important;  */
+   /* font-family: var(--bs-font-sans-serif)!important; */
+  }
+  
+  @media (max-width: 650px) {
+    .logo {
+      margin-top: 15px;
+      width: 100%;
+      position: relative;
+    }
+  }
+  
+  li {
+    list-style: none;
+     display: flex;
+      align-items: flex-end;
+    
+  }
+  h1
+  {
+    display: flex;
+    font-size: 20px;
+    color: #400734;
+  }
+  body
+  {
+    background: #44dd51;
+
+  }
+  
+  @media (max-width: 800px) {
+    #video {
+      max-width: 300px;
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+  }
+  nav {
+    font-weight: 400;
+  }
+  
+  @media (max-width: 650px) {
+    nav {
+    
+      margin-top: 10px;
+      width: 100%;
+      display: flex;
+    flex-direction: column;
+       align-items: center;
+      text-align: center;
+      padding: 0 50px;
+    }
+    nav li {
+      padding-bottom: 5px;
+    }
+  }
+  
+  nav > ul {
+    width: 35vw;
+    display: flex;
+    flex-direction: row;
+       justify-content: space-around;
+       --bs-bg-opacity: 1;
+     
+  }
+  
+  @media (max-width: 650px) {
+    nav > ul {
+    
+      flex-direction: column;
+    }
+  }
+  
+  #inicio
+  {
+
+   
+    font-size: 30px;
+  }
+  #Sobre_EcoNet
+  {
+ 
+     font-size: 30px;
+  }
+.secciones
+  {
+    color: rgb(78, 36, 27) !important;
+             margin-top: 80px;
+  }
+  
+
+  #page-wrapper
+  {
+  position: relative;
+   
+  }
+  
+  header
+  {
+    position: fixed;
+  }
+
+  .bg-body-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: #00808070 !important;
+    
+}
+
+.btn-outline-success {
+    --bs-btn-color: #FFFFFF !important;
+    --bs-btn-border-color: #FFFFFF !important;
+
+}
+
+.bg-white {
+    --bs-bg-opacity: 1;
+    background-color: #ffffff70!important;
+}
+
+footer{
+    color: black !important;
+  border-radius: 0.375rem;
+}
+
+#seguinos{
+    margin-top: 12px;
+}
+
+.cuerpoPag{
+    background-color: #FFFFFF;
+    padding: 20px;
+   text-align: justify;
+   border-radius: 0.375rem;
+}
+/* 
+#page-wrapper{
+    background: -webkit-linear-gradient(to right, #5a3215, #d8ba36, #6bdd36, #075e12);
+} */
+
+nav{
+    background-color: #ffffff70!important; 
+  
+}
+
+body{
+    background-image: url("logoEcoNet.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* h6, .text-reset{
+    background-color: #FFFFFF;
+} */
+
+.nav-item{
+    font-size: 18px;
+}

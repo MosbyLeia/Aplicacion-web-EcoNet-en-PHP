@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        Por favor completá los campos
         </div>';
     } else {
+        // Evitar inyección SQL
         if ($stmt = $conexion->prepare('SELECT Password FROM usuarios WHERE Usuario = ?')) {
             $stmt->bind_param('s', $_POST['Usuario']);
             $stmt->execute();
@@ -29,17 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_result($password);
                 $stmt->fetch();
 
-                               if (password_verify($_POST['Password'], $password)) {
+                // Validar la contraseña
+                if (password_verify($_POST['Password'], $password)) {
 
+                    // La conexión sería exitosa, se crea la sesión
                     session_regenerate_id();
                     $_SESSION['loggedin'] = TRUE;
                     $_SESSION['name'] = $_POST['Usuario'];
                     header('Location: calculadoraMain.php');
                 } else {
-                        $mostrarError = true;
+                    // Contraseña incorrecta
+                    $mostrarError = true;
                 }
             } else {
-                   $mostrarError = true;
+                // Usuario incorrecto
+                $mostrarError = true;
             }
 
             $stmt->close();

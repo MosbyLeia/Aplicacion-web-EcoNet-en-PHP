@@ -63,7 +63,7 @@ $resultado = $conex->query($sql);
               
 
                 echo "<td>";
-echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editarModal' . $fila['Apellidos'] . '">Editar</button>';
+echo '<button type="button"  name="editarUsuario" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editarModal' . $fila['Apellidos'] . '">Editar</button>';
 echo ' <button type="button" name="eliminarUsuario" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarModal' . $fila['Apellidos'] . '">Eliminar</button>';
 echo "</td>";
 echo "</tr>";
@@ -87,7 +87,7 @@ if(isset($_POST['agregarUsuario'])){
     if ($conn->query($sql) === TRUE) {
         echo "Usuario agregado con éxito.";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conex->error;
     }
 }
 // Código para eliminar un usuario
@@ -96,10 +96,10 @@ if(isset($_GET['eliminarUsuario'])){
 
     // Realizar la eliminación en la base de datos
     $sql = "DELETE FROM usuarios WHERE Apellidos = $apellido";
-    if ($conn->query($sql) === TRUE) {
+    if ($conex->query($sql) === TRUE) {
         echo "Usuario eliminado con éxito.";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conex->error;
     }
 }
 
@@ -115,10 +115,10 @@ if(isset($_POST['editarUsuario'])){
 
     // Realizar la actualización en la base de datos
     $sql = "UPDATE usuarios SET nombre='$nombre', apellido='$apellido', email='$email' WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
+    if ($conex->query($sql) === TRUE) {
         echo "Usuario actualizado con éxito.";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . "<br>" . $conex->error;
     }
 }
 

@@ -20,3 +20,50 @@
     border-bottom-right-radius: .3rem;
     }
     }
+
+
+
+
+
+
+
+
+
+    h1 {
+        text-align: center;
+        padding: 12px;
+        color: #444
+    }
+    
+    input {
+        width: calc(100% - 20px);
+        padding: 9px;
+        margin: auto;
+        margin-top: 12px;
+        font-size: 16px
+    }
+    
+    input[type='submit']{
+        background-color: #48e;
+        color: #fff;
+        width: calc(80% - 20px);
+        margin: 0 10%;
+        margin-top: 22px;
+        border: none;
+    }
+    
+    
+    .ok {
+        text-align: center;
+        width: 100%;
+        padding: 12px;
+        background-color: #1e6  !important;
+        color: #27b81a
+    }
+    .bad {
+        text-align: center;
+        width: 100%;
+        padding: 12px;
+        background-color: rgb(231, 12, 12) !important;
+        color: #e20303
+    }

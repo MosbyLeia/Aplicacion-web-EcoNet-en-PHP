@@ -164,3 +164,11 @@ body{
 .nav-item{
     font-size: 18px;
 }
+
+.navbar-expand-lg .navbar-nav .nav-link:hover {
+  color: white;
+}
+
+h4{
+  color: rgb(6, 56, 6);
+}

@@ -50,6 +50,8 @@ $resultado = $conex->query($sql);
         </thead>
         <tbody>
             <?php
+echo '<button type="button"  name="agregarUsuario" class="btn btn-success btn-sm" data-toggle="modal" data-target="#agregarModal">Agregar</button>';
+
             while ($fila = $resultado->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . $fila['Id_usuarios'] . "</td>";
@@ -84,7 +86,7 @@ if(isset($_POST['agregarUsuario'])){
 
     // Realizar la inserción en la base de datos
     $sql = "INSERT INTO usuarios (nombre, apellido, email, nacimiento, usuario, password) VALUES ('$nombre', '$apellido', '$email', '$fechanac', '$usuario', '$password')";
-    if ($conn->query($sql) === TRUE) {
+    if ($conex->query($sql) === TRUE) {
         echo "Usuario agregado con éxito.";
     } else {
         echo "Error: " . $sql . "<br>" . $conex->error;
@@ -177,6 +179,7 @@ if(isset($_POST['editarUsuario'])){
     </div>
   </div>
 </div>
+
 
 </body>
 </html>

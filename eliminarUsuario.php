@@ -24,7 +24,15 @@ if (isset($_POST['eliminar_usuario'])) {
 
     // Ejecutar la consulta y verificar si se ha eliminado el usuario
     if ($conex->query($sql) === TRUE) {
-        echo '<div class"container"><div class="alert alert-success  role="alert"> Usuario eliminado exitosamente.</div><a class="btn btn-success btn-sm offset-10" href="administradores.php">Volver</a></div>';
+        echo '<div class="container mt-5">
+        <div class="alert alert-success text-center" role="alert">
+            ¡Usuario eliminado exitosamente!
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <a class="btn btn-success btn-sm" href="administradores.php">Volver</a>
+        </div>
+    </div>
+    ';
     } 
 
     // Cerrar la conexión a la base de datos

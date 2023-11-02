@@ -83,15 +83,24 @@ if(isset($_POST['guardarCambios'])){
     // Realizar la actualización en la base de datos
     $sql = "UPDATE usuarios SET Nombres='$nombre', Apellidos='$apellido', Correo='$email', Fecha_de_nacimiento='$fechanac', Usuario='$usuario', Password='$password'  WHERE Id_usuarios=$id"; // Corregido nombres de las columnas y variables
 
-    if ($conn->query($sql) === TRUE) { // Cambiado de '$conex' a '$conn'
-        echo "Usuario actualizado con éxito.";
-        echo '<a  class="btn btn-info offset-10 mb-5" href="administradores.php" role="button">Volver</a>';
+    // if ($conn->query($sql) === TRUE) { // Cambiado de '$conex' a '$conn'
+    //     echo "Usuario actualizado con éxito.";
+      
+    // } 
+    if ($conn->query($sql) === TRUE) {
+        $mensaje = "Usuario actualizado con éxito.";
+        header("refresh:2;url=administradores.php");
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $mensaje = "Error al actualizar el usuario: " . $conn->error;
     }
+
 }
 ?>
-
+<?php if(!empty($mensaje)) { ?>
+        <div class="alert <?php echo ($conn->query($sql) === TRUE) ? 'alert-success' : 'alert-danger'; ?> text-center" role="alert">
+            <?php echo $mensaje; ?>
+        </div>
+    <?php } ?>
 <div class="container mt-5">
     <div class="row">
         <div class="col-12">

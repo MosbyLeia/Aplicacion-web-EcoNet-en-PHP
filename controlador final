@@ -1,0 +1,203 @@
+
+
+
+<?php
+
+include("conexionPreguntas.php");
+
+if (isset($_POST['Calcular1'])) {
+
+    $Agua1 = $conex->real_escape_string($_POST['shower']);
+    $Agua2 = $conex->real_escape_string($_POST['bath']);
+    $Agua3 = $conex->real_escape_string($_POST['tapwater']);
+
+    $consulta = "INSERT INTO respuestas_usuarios (Agua1, Agua2, Agua3) VALUES ('$Agua1', '$Agua2', '$Agua3')";
+
+    $resultado = mysqli_query($conex, $consulta);
+
+}
+
+
+<?php
+include("conexionPreguntas.php");
+
+if (isset($_POST['Calcular2'])) {
+
+  
+    $Alimentacion1 = $conex->real_escape_string($_POST['meat']);
+    $Alimentacion2 = $conex->real_escape_string($_POST['fish']);
+    $Alimentacion3 = $conex->real_escape_string($_POST['dairy']);
+    $Alimentacion4 = $conex->real_escape_string($_POST['processed']);
+    $Alimentacion5 = $conex->real_escape_string($_POST['organic']);
+    $consulta = "INSERT INTO respuestas_usuarios (Alimentacion1, Alimentacion2, Alimentacion3, Alimentacion4, Alimentacion5) VALUES ('$Alimentacion1', '$Alimentacion2', '$Alimentacion3', '$Alimentacion4', '$Alimentacion5')";
+
+    $resultado = mysqli_query($conex, $consulta);
+
+}
+
+<?php
+include("conexionPreguntas.php");
+
+
+if (isset($_POST['Calcular3'])) {
+    $compraLocal = $_POST['local'];
+    $alimentosOrganicos = $_POST['organicfood'];
+    $evitaEmbalaje = $_POST['packaging'];
+    $ropaSegundaMano = $_POST['clothing'];
+    $donaciones = $_POST['donations'];
+
+       $consulta = "INSERT INTO respuestas_usuarios (Compras1, Compras2, Compras3, Compras4, Compras5) VALUES ('$compraLocal', '$alimentosOrganicos', '$evitaEmbalaje', '$ropaSegundaMano', '$donaciones')";
+   
+    $resultado = mysqli_query($conex, $consulta);
+    if ($resultado) {
+
+      
+
+        echo "";
+    } else {
+        
+        echo "Error al insertar datos: " . mysqli_error($conex);
+    }
+}
+
+<?php
+
+include("conexionPreguntas.php");
+
+if (isset($_POST['Calcular5'])) {
+
+    $kilometrosDiarios = $_POST['car'];
+    $transportePublico = $_POST['public'];
+    $moto = $_POST['motorcycle'];
+    $carpooling = $_POST['carpooling'];
+    $cocheElectrico = $_POST['electriccar'];
+       $consulta = "INSERT INTO respuestas_usuarios (Transporte1, Transporte2, Transporte3, Transporte4, Transporte5) VALUES ('$$kilometrosDiarios', '$transportePublico', '$moto', '$carpooling', '$cocheElectrico')";
+    $resultado = mysqli_query($conex, $consulta);
+
+    if ($resultado) {
+
+        echo "";
+    } else {
+       
+        echo "Error al insertar datos: " . mysqli_error($conex);
+    }
+}
+
+?>
+
+<?php
+
+include("conexionPreguntas.php");
+
+if (isset($_POST['Continuar'])) {
+
+    $cantidadRopa = $_POST['clothes'];
+    $cantidadZapatos = $_POST['shoes'];
+    $cantidadAccesorios = $_POST['accessories'];
+    $consulta = "INSERT INTO respuestas_usuarios (Vestido1, Vestido2, Vestido3) VALUES ('$cantidadRopa', '$cantidadZapatos', '$cantidadAccesorios')";
+      $resultado = mysqli_query($conex, $consulta);
+
+    if ($resultado) {
+
+        echo "";
+    } else {
+     
+        echo "Error al insertar datos: " . mysqli_error($conex);
+    }
+}
+
+?>
+
+<?php
+include("conexionPreguntas.php");
+if (isset($_POST['Continuar'])) {
+
+    $consumoElectricidad = $_POST['electricity'];
+    $fuenteCalefaccion = $_POST['heating'];
+    $fuenteCocina = $_POST['cooking'];
+    $fuenteAguaCaliente = $_POST['hotwater'];
+    $aislamiento = $_POST['insulation'];
+    $panelesSolares = $_POST['solarpanels'];
+    $electrodomesticosEficientes = $_POST['energyefficient'];
+       $consulta = "INSERT INTO respuestas_usuarios (Vivienda1,Vivienda2, Vivienda3, Vivienda4, Vivienda5, Vivienda6, Vivienda7) VALUES ('$consumoElectricidad', '$fuenteCalefaccion', '$fuenteCocina', '$fuenteAguaCaliente', '$aislamiento', '$panelesSolares'), '$electrodomesticosEficientes')";
+    $resultado = mysqli_query($conex, $consulta);
+    if ($resultado) {
+
+      
+        echo "";
+    } else {
+       
+        echo "Error al insertar datos: " . mysqli_error($conex);
+    }
+}
+
+// PAGINAS PREGUNTAS
+
+<form action="controladorPreguntas.php" method="post">
+    <!-- Campos del formulario aquí -->
+    <input type="submit" value="Siguiente">
+</form>
+
+
+// AGUA
+//session_start();
+
+// Recolecta los datos del formulario y almacénalos en variables de sesión
+
+
+$_SESSION['shower'] = $_POST['shower'];
+
+
+// $_SESSION['shower'] = $_POST['shower'];
+// $_SESSION['bath'] = $_POST['bath'];
+// $_SESSION['tapwater'] = $_POST['tapwater'];
+
+// ... almacena las respuestas de las demás preguntas en variables de sesión
+
+// Redirige al usuario a la siguiente página del formulario
+header("Location: preguntasAlimentacion.php");
+
+
+// AGUA
+//session_start();
+
+// Recolecta los datos del formulario y almacénalos en variables de sesión
+
+$_SESSION['shower'] = $_POST['shower'];
+$_SESSION['bath'] = $_POST['bath'];
+$_SESSION['tapwater'] = $_POST['tapwater'];
+
+// ... almacena las respuestas de las demás preguntas en variables de sesión
+
+// Redirige al usuario a la siguiente página del formulario
+header("Location: preguntasAlimentacion.php");
+
+
+
+//ULTIMA DE LAS PAGINAS PREGUNTAS
+session_start();
+require_once("conexion.php"); // Archivo que contiene la conexión a la base de datos
+
+    // Todas las respuestas son válidas, almacénalas en la base de datos
+    $Agua = $_SESSION[$resultadoAgua["huellaCarbono"]];
+    $Alimentacion = $_SESSION[$resultadoAlimentacion["huellaCarbono"] ];
+    $Vestido = $_SESSION[$resultadoVestido["huellaCarbono"]];
+    $Vivienda = $_SESSION[$resultadoVivienda["huellaCarbono"]];
+    $Transporte = $_SESSION[$resultadoTransporte["huellaCarbono"]];
+    $Reciclaje = $_SESSION[$resultadoReciclaje["huellaCarbono"]];
+    $Compras = $_SESSION[$resultadoCompras["huellaCarbono"]];
+
+
+    // Prepara la consulta SQL para insertar los datos en la base de datos
+    $consulta = "INSERT INTO resultados (Agua, Alimentacion, Vestido, Vivienda, Transporte, Reciclaje, Compras) VALUES ('$Agua', '$Alimentacion', '$Vestido', '$Vivienda', '$Transporte', '$Reciclaje', '$Compras')";
+//tambien agregar la parte del sesion usuario y ver si poner un where
+    // Ejecuta la consulta
+    if (mysqli_query($conex, $consulta)) {
+        echo "Respuestas almacenadas correctamente en la base de datos.";
+    } else {
+        echo "Error al almacenar las respuestas: " . mysqli_error($conex);
+    }
+
+// Limpia las variables de sesión después de almacenar los datos en la base de datos
+session_unset();
+session_destroy();

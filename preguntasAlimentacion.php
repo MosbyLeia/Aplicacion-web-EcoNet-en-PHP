@@ -1,30 +1,27 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+ include("conexion.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
-<header>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
-    <link rel="stylesheet" href="calculadoraMain.css">
-
-</header>
-
 <head>
 
     <title id="title">
         EcoNet - Preguntas
     </title>
-
+   
 </head>
 
 <body>
+
+
 
     <div id="page-wrapper">
 
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -104,6 +101,7 @@
 
 </body>
 <div class="text-center pt-1 mb-5 pb-1">
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
 
     <button type="submit" name="Calcular2" class="btn btn-primary">Calcular</button>
 </div>
@@ -208,22 +206,22 @@ function calcularHuellaCarbonoAlimentacion($consumoCarne, $consumoPescado, $cons
             $emisionesOrganicos = 0;
             break;
     }
-    $huellaCarbonoTotal = $emisionesCarne + $emisionesPescado + $emisionesLacteos + $emisionesProcesados + $emisionesOrganicos;
+    $huellaCarbonoTotalAlimentacion = $emisionesCarne + $emisionesPescado + $emisionesLacteos + $emisionesProcesados + $emisionesOrganicos;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 10) {
+    if ($huellaCarbonoTotalAlimentacion >= 10) {
         $consejos[] = "Considera reducir el consumo de carne y pescado para disminuir la huella de carbono en tu dieta.";
     }
 
-    if ($huellaCarbonoTotal >= 15) {
+    if ($huellaCarbonoTotalAlimentacion >= 15) {
         $consejos[] = "Opta por alimentos orgánicos y locales para apoyar prácticas agrícolas sostenibles.";
     }
-    if ($huellaCarbonoTotal < 10) {
+    if ($huellaCarbonoTotalAlimentacion < 10) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalAlimentacion,
         "consejos" => $consejos
     ];
 }
@@ -236,25 +234,38 @@ if (isset($_POST['Calcular2'])) {
     $consumoOrganicos = $_POST['organic'];
 
     $resultadoAlimentacion = calcularHuellaCarbonoAlimentacion($consumoCarne, $consumoPescado, $consumoLacteos, $consumoProcesados, $consumoOrganicos);
-
+   
     echo '<div class="alert alert-info" role="alert">';
-    echo "Tu huella de carbono respecto a la alimentación es: " . $resultadoAlimentacion["huellaCarbono"] . " kg CO2eq.";
+    echo '<label name="resultadoAlimentacion">Tu huella de carbono respecto a la alimentación es: ' . $resultadoAlimentacion["huellaCarbono"] . ' kg CO2eq.';
     echo '</div>';
 
-    echo '<div class="alert alert-light" role="alert"><h3 >Consejos para reducir tu huella de carbono en la alimentación:</h3></div>';
+    echo '<div class="alert alert-light" role="alert"><h3>Consejos para reducir tu huella de carbono en la alimentación:</h3></div>';
     foreach ($resultadoAlimentacion["consejos"] as $consejo) {
         echo '<div class="alert alert-light" role="alert">';
         echo '<p>' . $consejo . '</p>';
         echo '</div>';
     }
 
-    if ($resultadoAlimentacion["huellaCarbono"] > 0) {
-        echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasCompras.php" role="button">Continuar</a>';
+    if ($resultadoAlimentacion["huellaCarbono"] > -10) {
+        
+        echo '<a id="continuar2" class="btn btn-info offset-10 mb-5" href="preguntasCompras.php" role="button">Continuar</a>';
     }
+}
+
+if (isset($_POST['Calcular2'])) {
+
+    $usuario = $_SESSION['Usuario'];
+    $resAlimentacion = $resultadoAlimentacion["huellaCarbono"];
+ 
+   $consulta = "INSERT INTO Alimentacion (Usuario, Alimentacion) 
+    VALUES ('$usuario', '$resAlimentacion')";
+
+$resultado = mysqli_query($conex, $consulta);
+
 }
 ?>
 <?php
-include("controladorPreguntasAlimentacion.php");
+
 include("templates/footer.php");
 ?>
 </form>

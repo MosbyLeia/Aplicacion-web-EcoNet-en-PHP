@@ -11,12 +11,8 @@
 </head>
 
 <body>
-    <style>
-        #cerrarSesionCalculadora {
-            display: none
-        }
-    </style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+
+
 
     <div id="page-wrapper">
         <div class="container">

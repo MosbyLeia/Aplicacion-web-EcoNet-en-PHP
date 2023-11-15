@@ -157,9 +157,6 @@ body{
     background-size: cover;
 }
 
-/* h6, .text-reset{
-    background-color: #FFFFFF;
-} */
 
 .nav-item{
     font-size: 18px;
@@ -171,4 +168,11 @@ body{
 
 h4{
   color: rgb(6, 56, 6);
+}
+
+#goCalculadoraMenu
+
+ {
+  background-color: rgb(88, 136, 88);
+  font-size: 20px;
 }

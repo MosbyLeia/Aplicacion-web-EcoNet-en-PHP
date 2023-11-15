@@ -1,13 +1,9 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+ include("conexion.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
-<header>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
-    <link rel="stylesheet" href="calculadoraMain.css">
-</header>
-
 <head>
 
     <title id="title">
@@ -23,7 +19,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -114,7 +110,7 @@
 </body>
 
 <div class="text-center pt-1 mb-5 pb-1">
-
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
     <button type="submit" name="Calcular3" class="btn btn-primary">Calcular</button>
 </div>
 
@@ -128,55 +124,61 @@ function calcularHuellaCarbonoCompras($compraLocal, $alimentosOrganicos, $evitaE
     $emisionesDonaciones = 0;
 
     if ($compraLocal != "Sí") {
-        $emisionesCompraLocal = 2;
+        $emisionesCompraLocal = 1;
+    } else
+    { $emisionesCompraLocal = 2;
     }
 
     if ($alimentosOrganicos != "Sí") {
         $emisionesOrganicos = 1;
+    }    else { $emisionesCompraLocal = 2;
     }
 
     if ($evitaEmbalaje != "Sí") {
         $emisionesEvitaEmbalaje = 1;
+    } else { $emisionesCompraLocal = 2;
     }
 
     if ($ropaSegundaMano != "Sí") {
         $emisionesRopaSegundaMano = 1;
+    } else { $emisionesCompraLocal = 2;
     }
 
 
     if ($donaciones != "Sí") {
         $emisionesDonaciones = 1;
+    } else { $emisionesCompraLocal = 2;
     }
 
-    $huellaCarbonoTotal = $emisionesCompraLocal + $emisionesOrganicos + $emisionesEvitaEmbalaje + $emisionesRopaSegundaMano + $emisionesDonaciones;
+    $huellaCarbonoTotalCompras = $emisionesCompraLocal + $emisionesOrganicos + $emisionesEvitaEmbalaje + $emisionesRopaSegundaMano + $emisionesDonaciones;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 3) {
+    if ($huellaCarbonoTotalCompras >= 3) {
         $consejos[] = "Considera comprar más productos locales para reducir las emisiones relacionadas con el transporte.";
     }
 
-    if ($huellaCarbonoTotal >= 2) {
+    if ($huellaCarbonoTotalCompras >= 2) {
         $consejos[] = "Opta por alimentos orgánicos para apoyar prácticas agrícolas más sostenibles.";
     }
 
-    if ($huellaCarbonoTotal >= 2) {
+    if ($huellaCarbonoTotalCompras >= 2) {
         $consejos[] = "Evita productos con mucho embalaje para reducir los residuos y las emisiones asociadas a la producción de envases.";
     }
 
-    if ($huellaCarbonoTotal >= 2) {
+    if ($huellaCarbonoTotalCompras >= 2) {
         $consejos[] = "Compra más ropa de segunda mano para reducir la demanda de producción de prendas nuevas.";
     }
 
-    if ($huellaCarbonoTotal >= 1) {
+    if ($huellaCarbonoTotalCompras >= 1) {
         $consejos[] = "Continúa donando ropa y objetos que ya no usas para fomentar la reutilización.";
     }
-    if ($huellaCarbonoTotal < 1) {
+    if ($huellaCarbonoTotalCompras < 1) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
 
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalCompras,
         "consejos" => $consejos
     ];
 }
@@ -187,6 +189,17 @@ if (isset($_POST['Calcular3'])) {
     $evitaEmbalaje = $_POST['packaging'];
     $ropaSegundaMano = $_POST['clothing'];
     $donaciones = $_POST['donations'];
+$_SESSION['local'] = $_POST['local'];
+
+$_SESSION['organicfood'] = $_POST['organicfood'];
+
+$_SESSION['packaging'] = $_POST['packaging'];
+
+$_SESSION['clothing'] = $_POST['clothing'];
+
+$_SESSION['donations'] = $_POST['donations'];
+
+
 
     $resultadoCompras = calcularHuellaCarbonoCompras($compraLocal, $alimentosOrganicos, $evitaEmbalaje, $ropaSegundaMano, $donaciones);
 
@@ -201,14 +214,27 @@ if (isset($_POST['Calcular3'])) {
         echo '</div>';
     }
 
-    if ($resultadoCompras["huellaCarbono"] > 0) {
+    if ($resultadoCompras["huellaCarbono"] > -10) {
         echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasReciclaje.php" role="button">Continuar</a>';
     }
+}
+
+
+
+if (isset($_POST['Calcular3'])) {
+
+$usuario = $_SESSION['Usuario'];
+$resCompras = $resultadoCompras["huellaCarbono"];
+
+$consulta = "INSERT INTO Compras (Usuario, Compras) 
+VALUES ('$usuario', '$resCompras')";
+
+$resultado = mysqli_query($conex, $consulta);
+
 }
 ?>
 
 <?php
-include("controladorPreguntasCompras.php");
 include("templates/footer.php"); ?>
 </form>
 

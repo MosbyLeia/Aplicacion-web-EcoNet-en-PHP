@@ -1,4 +1,6 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+include("conexion.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -21,7 +23,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -107,7 +109,7 @@
 </body>
 
 <div class="text-center pt-1 mb-5 pb-1">
-
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
     <button type="submit" name="Calcular5" class="btn btn-primary">Calcular</button>
 </div>
 
@@ -187,27 +189,27 @@ function calcularHuellaCarbonoTransporte($kilometrosDiarios, $transportePublico,
         $emisionesCocheElectrico = 0.1;
     }
 
-    $huellaCarbonoTotal = $emisionesKilometros + $emisionesTransportePublico + $emisionesMoto + $emisionesCarpooling + $emisionesCocheElectrico;
+    $huellaCarbonoTotalTransporte = $emisionesKilometros + $emisionesTransportePublico + $emisionesMoto + $emisionesCarpooling + $emisionesCocheElectrico;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 5) {
+    if ($huellaCarbonoTotalTransporte >= 5) {
         $consejos[] = "Considera reducir la cantidad de kilómetros que conduces diariamente.";
     }
 
-    if ($huellaCarbonoTotal >= 7) {
+    if ($huellaCarbonoTotalTransporte >= 7) {
         $consejos[] = "Opta por el transporte público o el carpooling más frecuentemente para reducir las emisiones.";
     }
 
-    if ($huellaCarbonoTotal >= 9) {
+    if ($huellaCarbonoTotalTransporte >= 9) {
         $consejos[] = "Si es posible, utiliza una bicicleta o camina en lugar de conducir para trayectos cortos.";
     }
-    if ($huellaCarbonoTotal < 5) {
+    if ($huellaCarbonoTotalTransporte < 5) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
 
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalTransporte,
         "consejos" => $consejos
     ];
 }
@@ -232,14 +234,26 @@ if (isset($_POST['Calcular5'])) {
         echo '</div>';
     }
 
-    if ($resultadoTransporte["huellaCarbono"] > 0) {
+    if ($resultadoTransporte["huellaCarbono"] > -10) {
         echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasVestido.php" role="button">Continuar</a>';
     }
 }
+
+if (isset($_POST['Calcular5'])) {
+
+    $usuario = $_SESSION['Usuario'];
+    $resTransporte = $resultadoTransporte["huellaCarbono"];
+    
+    $consulta = "INSERT INTO Transporte (Usuario, Transporte) 
+    VALUES ('$usuario', '$resTransporte')";
+    
+    $resultado = mysqli_query($conex, $consulta);
+    
+    }
 ?>
 
 <?php
-include("controladorPreguntasTransporte.php");
+
 include("templates/footer.php"); ?>
 </form>
 

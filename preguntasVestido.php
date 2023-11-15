@@ -1,4 +1,6 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+include("conexion.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -24,7 +26,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -90,7 +92,7 @@
 
 
 <div class="text-center pt-1 mb-5 pb-1">
-
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
     <button type="submit" name="Calcular6" class="btn btn-primary">Calcular</button>
 </div>
 
@@ -146,26 +148,26 @@ function calcularHuellaCarbonoRopa($cantidadRopa, $cantidadZapatos, $cantidadAcc
             break;
     }
 
-    $huellaCarbonoTotal = $emisionesRopa + $emisionesZapatos + $emisionesAccesorios;
+    $huellaCarbonoTotalVestido = $emisionesRopa + $emisionesZapatos + $emisionesAccesorios;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 5) {
+    if ($huellaCarbonoTotalVestido >= 5) {
         $consejos[] = "Considera comprar ropa de segunda mano o intercambiar prendas para reducir la demanda de productos nuevos.";
     }
 
-    if ($huellaCarbonoTotal >= 7) {
+    if ($huellaCarbonoTotalVestido >= 7) {
         $consejos[] = "Opta por marcas y productos que sean sostenibles y ecológicos.";
     }
 
-    if ($huellaCarbonoTotal >= 9) {
+    if ($huellaCarbonoTotalVestido >= 9) {
         $consejos[] = "Piensa en la calidad en lugar de la cantidad. Invierte en prendas duraderas y atemporales.";
     }
-    if ($huellaCarbonoTotal < 5) {
+    if ($huellaCarbonoTotalVestido < 5) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalVestido,
         "consejos" => $consejos
     ];
 }
@@ -187,14 +189,25 @@ if (isset($_POST['Calcular6'])) {
         echo '</div>';
     }
 
-    if ($resultadoRopa["huellaCarbono"] > 0) {
+    if ($resultadoRopa["huellaCarbono"] > -10) {
         echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasVivienda.php" role="button">Continuar</a>';
     }
 }
+
+if (isset($_POST['Calcular6'])) {
+
+    $usuario = $_SESSION['Usuario'];
+    $resVestido = $resultadoRopa["huellaCarbono"];
+    
+    $consulta = "INSERT INTO Vestido (Usuario, Vestido) 
+    VALUES ('$usuario', '$resVestido')";
+    
+    $resultado = mysqli_query($conex, $consulta);
+    
+    }
 ?>
 
 <?php
-include("controladorPreguntasVestido.php");
 include("templates/footer.php"); ?>
 </form>
 

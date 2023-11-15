@@ -1,4 +1,6 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+include("conexion.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -21,7 +23,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -79,7 +81,7 @@
 <br>
 
 </body>
-<div class="text-center pt-1 mb-5 pb-1">
+<div class="text-center pt-1 mb-5 pb-1"><a class="btn btn-danger" href="index.php">Volver a Inicio</a>
 
     <button type="submit" name="Calcular4" class="btn btn-primary">Calcular</button>
 </div>
@@ -111,24 +113,26 @@ function calcularHuellaCarbonoReciclaje($reciclaje, $compostaje)
 
     if ($compostaje === "Sí") {
         $emisionesCompostaje = 1;
+    }  else 
+    { $emisionesCompostaje = 2;
     }
 
-    $huellaCarbonoTotal = $emisionesReciclaje + $emisionesCompostaje;
+    $huellaCarbonoTotalReciclaje = $emisionesReciclaje + $emisionesCompostaje;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 3) {
+    if ($huellaCarbonoTotalReciclaje >= 3) {
         $consejos[] = "Intenta reciclar más para reducir la cantidad de residuos enviados a vertederos.";
     }
 
-    if ($huellaCarbonoTotal >= 1) {
+    if ($huellaCarbonoTotalReciclaje >= 1) {
         $consejos[] = "El compostaje es una excelente manera de reducir los residuos orgánicos y generar abono para plantas.";
     }
-    if ($huellaCarbonoTotal < 1) {
+    if ($huellaCarbonoTotalReciclaje < 1) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalReciclaje,
         "consejos" => $consejos
     ];
 }
@@ -138,6 +142,7 @@ if (isset($_POST['Calcular4'])) {
     $compostaje = $_POST['composting'];
 
     $resultadoReciclaje = calcularHuellaCarbonoReciclaje($reciclaje, $compostaje);
+
     echo '<div class="alert alert-info" role="alert">';
     echo "Tu huella de carbono relacionada con el reciclaje y compostaje es: " . $resultadoReciclaje["huellaCarbono"] . " kg CO2eq.";
     echo '</div>';
@@ -149,14 +154,26 @@ if (isset($_POST['Calcular4'])) {
         echo '</div>';
     }
 
-    if ($resultadoReciclaje["huellaCarbono"] > 0) {
+    if ($resultadoReciclaje["huellaCarbono"] > -10) {
         echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasTransporte.php" role="button">Continuar</a>';
     }
 }
+
+if (isset($_POST['Calcular4'])) {
+
+    $usuario = $_SESSION['Usuario'];
+    $resReciclaje = $resultadoReciclaje["huellaCarbono"];
+    
+    $consulta = "INSERT INTO Reciclaje (Usuario, Reciclaje) 
+    VALUES ('$usuario', '$resReciclaje')";
+    
+    $resultado = mysqli_query($conex, $consulta);
+    
+    }
 ?>
 
 <?php
-include("controladorPreguntasReciclaje.php");
+
 include("templates/footer.php"); ?>
 </form>
 

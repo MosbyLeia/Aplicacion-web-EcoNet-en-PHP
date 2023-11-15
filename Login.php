@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,8 +31,7 @@
                                     <h4 class="mt-1 mb-5 pb-1">Somos EcoNet</h4>
                                 </div>
 
-                               <!-- <form action="" method="post" enctype=multipart/form-data>  -->
-                                 <form action="" method="post" action=""> <h5>Ingrese a su cuenta</h5> 
+                                 <form action="" method="post" > <h5>Ingrese a su cuenta</h5> 
 
                                     <div class="form-outline mb-4">
                                     <div class="row"> 
@@ -72,7 +72,8 @@
 
 <?php
 include("conexion.php");
-include("controlador.php");
+
+ include("controlador.php");
 
 ?>
 
@@ -111,3 +112,4 @@ include("controlador.php");
 </section>
 </body>
 </html>
+

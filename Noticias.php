@@ -1,4 +1,6 @@
-<?php include("templates/header.php");?>
+<?php include("templates/header.php");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -24,7 +26,6 @@
 
 <body>
 
-<style>#cerrarSesionCalculadora {display: none}</style>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
 

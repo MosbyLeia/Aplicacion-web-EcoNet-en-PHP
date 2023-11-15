@@ -31,3 +31,10 @@ h3, h6, select, label{
 #cerrarSesionCalculadora{
     display: block;
 }
+
+
+#goCalculadoraMenu, .dropdown-item, .nav-link .dropdown-toggle,  .navbar-expand-lg .navbar-nav .nav-link
+
+ {
+  background-color: transparent !important; /* Hace que el fondo de cada ítem sea transparente */
+}

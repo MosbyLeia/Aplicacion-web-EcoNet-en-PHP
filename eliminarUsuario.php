@@ -40,7 +40,6 @@ if (isset($_POST['eliminar_usuario'])) {
     
 }
 
-
 ?>
 
 <!DOCTYPE html>

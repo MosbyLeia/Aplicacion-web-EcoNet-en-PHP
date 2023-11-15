@@ -1,4 +1,6 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+include("conexion.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -22,7 +24,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2><?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -116,8 +118,8 @@
 </body>
 
 <div class="text-center pt-1 mb-5 pb-1">
-
-    <button type="submit" name="Calcular6" class="btn btn-primary">Calcular</button>
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
+    <button type="submit" name="Calcular7" class="btn btn-primary">Calcular</button>
 </div>
 
 <?php
@@ -203,31 +205,31 @@ function calcularHuellaCarbonoVivienda($consumoElectricidad, $fuenteCalefaccion,
         $puntosElectrodomesticos = 1;
     }
 
-    $huellaCarbonoTotal = $emisionesElectricidad + $emisionesCalefaccion + $emisionesCocina + $emisionesAguaCaliente - $puntosAislamiento - $puntosPanelesSolares - $puntosElectrodomesticos;
+    $huellaCarbonoTotalVivienda = $emisionesElectricidad + $emisionesCalefaccion + $emisionesCocina + $emisionesAguaCaliente - $puntosAislamiento - $puntosPanelesSolares - $puntosElectrodomesticos;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 5) {
+    if ($huellaCarbonoTotalVivienda >= 5) {
         $consejos[] = "Considera cambiar a electrodomésticos de alta eficiencia energética para reducir el consumo de electricidad.";
     }
 
-    if ($huellaCarbonoTotal >= 7) {
+    if ($huellaCarbonoTotalVivienda >= 7) {
         $consejos[] = "Instala paneles solares para generar tu propia electricidad a partir de fuentes renovables.";
     }
 
-    if ($huellaCarbonoTotal >= 9) {
+    if ($huellaCarbonoTotalVivienda >= 9) {
         $consejos[] = "Mejora el aislamiento de tu hogar para reducir la necesidad de calefacción y aire acondicionado.";
     }
-    if ($huellaCarbonoTotal < 5) {
+    if ($huellaCarbonoTotalVivienda < 5) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalVivienda,
         "consejos" => $consejos
     ];
 }
 
-if (isset($_POST['Calcular6'])) {
+if (isset($_POST['Calcular7'])) {
     $consumoElectricidad = $_POST['electricity'];
     $fuenteCalefaccion = $_POST['heating'];
     $fuenteCocina = $_POST['cooking'];
@@ -248,15 +250,25 @@ if (isset($_POST['Calcular6'])) {
         echo '</div>';
     }
 
-    if ($resultadoVivienda["huellaCarbono"] > 0) {
-        echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="index.php" role="button">Finalizar</a>';
+    if ($resultadoVivienda["huellaCarbono"] > -10) {
+        echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="pillsResultados.php" role="button">Mirá tus resultados</a>';
     }
 }
+if (isset($_POST['Calcular7'])) {
 
+    $usuario = $_SESSION['Usuario'];
+    $resVivienda = $resultadoVivienda["huellaCarbono"];
+    
+    $consulta = "INSERT INTO Vivienda (Usuario, Vivienda) 
+    VALUES ('$usuario', '$resVivienda')";
+    
+    $resultado = mysqli_query($conex, $consulta);
+    
+    }
 ?>
 
 <?php
-include("controladorPreguntasVivienda.php");
+
 include("templates/footer.php"); ?>
 </form>
 

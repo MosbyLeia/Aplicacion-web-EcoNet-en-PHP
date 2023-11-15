@@ -1,12 +1,11 @@
-<?php include("templates/header.php"); ?>
+<?php include("templates/header.php");
+ include("conexion.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
-<header>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
-    <link rel="stylesheet" href="calculadoraMain.css">
-</header>
+     
 
 <head>
 
@@ -22,7 +21,7 @@
         <div class="container">
             <section>
                 <p id="inicioPreguntas" class="secciones">
-                <h2>Tu EcoCalc de <span id="mesActual"></span>
+                <h2>    <?php echo $_SESSION['Usuario'];?></p>Tu EcoCalc de <span id="mesActual"> </span>
                     <script>
                         function obtenerMesActual() {
                             const meses = [
@@ -53,7 +52,7 @@
                                 <div class="form-group">
                                     <form method="post" action="">
 
-                                        <label for="shower">¿Cuánto tiempo te duchas al día?</label>
+                                        <label for="shower"><strong>¿Cuánto tiempo te duchas al día? Sé sincer@, si no te bañás prometo no decirle a nadie :D </strong></label>
                                         <select class="form-control" id="shower" name="shower">
                                             <option value="Menos de 5 minutos">Menos de 5 minutos</option>
                                             <option value="5-10 minutos">5-10 minutos</option>
@@ -81,8 +80,9 @@
                             </div>
                         </div>
                     </div>
+                  
 
-</body>
+
 
 
 
@@ -91,8 +91,8 @@
 
 
 <div class="text-center pt-1 mb-5 pb-1">
-
-    <button type="submit" name="Calcular1" class="btn btn-primary">Calcular</button>
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
+    <button name="Calcular1" class="btn btn-primary">Calcular</button>
 </div>
 <?php
 
@@ -104,7 +104,7 @@ function calcularHuellaCarbono($tiempoDucha, $vecesBano, $dejarCanillaAbierta)
 
 
     switch ($tiempoDucha) {
-        case "Menos de 5 minutos":
+        case "Menos de 5 minutos o cero pues no me baño":
             $emisionesDucha = 2;
             break;
         case "5-10 minutos":
@@ -119,7 +119,7 @@ function calcularHuellaCarbono($tiempoDucha, $vecesBano, $dejarCanillaAbierta)
     }
 
     switch ($vecesBano) {
-        case "Nunca":
+        case "Nunca pues no me baño":
             $emisionesBano = 0;
             break;
         case "1-2 veces":
@@ -139,27 +139,27 @@ function calcularHuellaCarbono($tiempoDucha, $vecesBano, $dejarCanillaAbierta)
         $emisionesCanilla = 1;
     }
 
-    $huellaCarbonoTotal = $emisionesDucha + $emisionesBano + $emisionesCanilla;
+    $huellaCarbonoTotalAgua = $emisionesDucha + $emisionesBano + $emisionesCanilla;
 
     $consejos = [];
 
-    if ($huellaCarbonoTotal >= 5) {
+    if ($huellaCarbonoTotalAgua >= 5) {
         $consejos[] = "Considera reducir el tiempo de tus duchas para disminuir el consumo de agua y energía.";
     }
 
-    if ($huellaCarbonoTotal >= 7) {
+    if ($huellaCarbonoTotalAgua >= 7) {
         $consejos[] = "Intenta reducir la frecuencia de tus baños en la bañera para ahorrar agua.";
     }
 
     if ($dejarCanillaAbierta === "Sí") {
         $consejos[] = "Recuerda cerrar la canilla mientras te cepillas los dientes para evitar desperdiciar agua.";
     }
-    if ($huellaCarbonoTotal < 5) {
+    if ($huellaCarbonoTotalAgua < 5) {
         $consejos[] = "Felicitaciones, segui asi!";
     }
 
     return [
-        "huellaCarbono" => $huellaCarbonoTotal,
+        "huellaCarbono" => $huellaCarbonoTotalAgua,
         "consejos" => $consejos
     ];
 }
@@ -168,30 +168,48 @@ if (isset($_POST['Calcular1'])) {
     $tiempoDucha = $_POST['shower'];
     $vecesBano = $_POST['bath'];
     $dejarCanillaAbierta = $_POST['tapwater'];
-    $resultado = calcularHuellaCarbono($tiempoDucha, $vecesBano, $dejarCanillaAbierta);
 
+    $resultadoAgua = calcularHuellaCarbono($tiempoDucha, $vecesBano, $dejarCanillaAbierta);
+
+    echo '<br>'; 
+  
+
+    echo '<br>'; 
+    $numeroAgua = (int)($resultadoAgua["huellaCarbono"]);
+  
     echo '<div class="alert alert-info" role="alert">';
-    echo "Tu huella de carbono respecto al uso del agua es: " . $resultado["huellaCarbono"] . " kg CO2eq.";
+    echo '<label name="resultadoAgua">Tu huella de carbono respecto al uso del agua es: ' . $resultadoAgua["huellaCarbono"] . ' kg CO2eq.';
     echo '</div>';
+    
+    $usuario = $_SESSION['Usuario'];
 
-    echo '<div class="alert alert-light" role="alert"><h3 >Consejos para reducir tu huella de carbono en el consumo de agua:</h3></div>';
-    foreach ($resultado["consejos"] as $consejo) {
+    echo '<div class="alert alert-light" role="alert"><h3>Consejos para reducir tu huella de carbono en el consumo de agua:</h3></div>';
+    foreach ($resultadoAgua["consejos"] as $consejo) {
         echo '<div class="alert alert-light" role="alert">';
         echo '<p>' . $consejo . '</p>';
         echo '</div>';
     }
+   
+    echo '<a id="continuar1" class="btn btn-info offset-10 mb-5" href="preguntasAlimentacion.php" role="button">Continuar</a>';
+}
+if (isset($_POST['Calcular1'])) {
 
-    if ($resultado["huellaCarbono"] > 0) {
-        echo '<a id="btn-continuar" class="btn btn-info offset-10 mb-5" href="preguntasAlimentacion.php" role="button">Continuar</a>';
-    }
+    $usuario = $_SESSION['Usuario'];
+    $resultadoAgua = $resultadoAgua["huellaCarbono"];
+   $consulta = "INSERT INTO Agua (Usuario, Agua) 
+    VALUES ('$usuario', '$resultadoAgua')";
+
+$resultado = mysqli_query($conex, $consulta);
+
 }
 
 ?>
-
+ 
+</body>
 <?php
 
-include("controladorPreguntasAgua.php");
 include("templates/footer.php"); ?>
 </form>
 
 </html>
+

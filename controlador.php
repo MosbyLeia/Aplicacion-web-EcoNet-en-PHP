@@ -1,73 +1,45 @@
 <?php
 session_start();
 
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'econet';
-
-$conexion = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-
-if (mysqli_connect_error()) {
-    exit('Fallo en la conexión de MySQL:' . mysqli_connect_error());
-}
-
-$mostrarError = false;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificar si los campos están vacíos
     if (empty($_POST['Usuario']) || empty($_POST['Password'])) {
-      echo  '<div class="alert alert-warning" role="alert">
-       Por favor completá los campos
-        </div>';
+        echo '<div class="alert alert-warning" role="alert">Por favor completá los campos</div>';
     } else {
-        // Evitar inyección SQL
-        if ($stmt = $conexion->prepare('SELECT Password FROM usuarios WHERE Usuario = ?')) {
-            $stmt->bind_param('s', $_POST['Usuario']);
-            $stmt->execute();
-            $stmt->store_result();
+        // Obtener datos del formulario
+        $nombreUsuario = $_POST['Usuario'];
+        $contrasena = $_POST['Password'];
 
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($password);
-                $stmt->fetch();
+        // Preparar la consulta SQL
+        $stmt = $conex->prepare("SELECT Id_usuarios, Usuario, Password FROM usuarios WHERE Usuario = ?");
+        $stmt->bind_param('s', $nombreUsuario);
+        $stmt->execute();
+        $stmt->store_result();
 
-                // Validar la contraseña
-                if (password_verify($_POST['Password'], $password)) {
+        // Verificar si el usuario existe en la base de datos
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($idUsuario, $usuario, $contrasenaHash);
+            $stmt->fetch();
 
-                    // La conexión sería exitosa, se crea la sesión
-                    session_regenerate_id();
-                    $_SESSION['loggedin'] = TRUE;
-                    $_SESSION['name'] = $_POST['Usuario'];
-                    header('Location: calculadoraMain.php');
-                } else {
-                    // Contraseña incorrecta
-                    $mostrarError = true;
-                }
+            // Verificar la contraseña
+            if (password_verify($contrasena, $contrasenaHash)) {
+                // La contraseña es correcta, iniciar sesión
+                $_SESSION['Id_usuarios'] = $idUsuario;
+                $_SESSION['Usuario'] = $usuario;
+                header("Location: calculadoraMain.php"); // Redirigir a la página de inicio después del inicio de sesión exitoso
             } else {
-                // Usuario incorrecto
-                $mostrarError = true;
+                // Contraseña incorrecta
+                echo '<div class="alert alert-danger" role="alert">Contraseña incorrecta</div>';
             }
-
-            $stmt->close();
+        } else {
+            // Usuario incorrecto
+            echo '<div class="alert alert-danger" role="alert">Usuario incorrecto</div>';
         }
+
+        $stmt->close();
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-
-
-<body>
-    <?php
-    if ($mostrarError) {
-        echo '<div class="alert alert-danger" role="alert">
-        El usuario o la clave no son válidos
-        </div>';
-    }
-    ?>
-
-</body>
-
-</html>
 
 
 

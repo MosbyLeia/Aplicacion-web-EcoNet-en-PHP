@@ -90,10 +90,6 @@
             });
         </script>
 
-
-
-
-
         <?php
         include("registrar.php");
 

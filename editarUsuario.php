@@ -51,42 +51,19 @@ if ($result->num_rows > 0) {
     $nombre_actual = "";
 }
 
-// if(isset($_POST['guardarCambios'])){
-//     $id = $_POST['Id_usuarios'];
-//       $nombre = $_POST['Nombres'];
-//       $apellido = $_POST['Apellidos'];
-//       $email = $_POST['Correo'];
-//       $fechanac = $_POST['Fecha_de_nacimiento'];
-//       $usuario = $_POST['Usuario'];
-//       $correo = $_POST['Correo'];
-//       $password = $_POST['Password'];
-  
-//       // Realizar la actualización en la base de datos
-//       $sql = "UPDATE usuarios SET nombre='$nombre', apellido='$apellido', email='$email', fecha_nacimiento='$fechanac', usuario='$usuario', correo='$correo', password='password'  WHERE id=$id";
-//       if ($conex->query($sql) === TRUE) {
-//           echo "Usuario actualizado con éxito.";
-//       } else {
-//           echo "Error: " . $sql . "<br>" . $conex->error;
-//       }
-//   }
-
 if(isset($_POST['guardarCambios'])){
-    $id = $_POST['usuario_id']; // Cambiado de 'Id_usuarios' a 'usuario_id'
-    $nombre = $_POST['nombres']; // Cambiado de 'Nombres' a 'nombres'
-    $apellido = $_POST['apellidos']; // Cambiado de 'Apellidos' a 'apellidos'
-    $email = $_POST['correo']; // Cambiado de 'Correo' a 'correo'
-    $fechanac = $_POST['fecha_nacimiento']; // Cambiado de 'Fecha_de_nacimiento' a 'fecha_nacimiento'
-    $usuario = $_POST['usuario']; // Cambiado de 'Usuario' a 'usuario'
-    $correo = $_POST['correo']; // Cambiado de 'Correo' a 'correo'
-    $password = $_POST['password']; // Cambiado de 'Password' a 'password'
-
-    // Realizar la actualización en la base de datos
+    $id = $_POST['usuario_id']; 
+    $nombre = $_POST['nombres']; 
+    $apellido = $_POST['apellidos']; 
+    $email = $_POST['correo']; 
+    $fechanac = $_POST['fecha_nacimiento']; 
+    $usuario = $_POST['usuario']; 
+    $correo = $_POST['correo']; 
+    $password = $_POST['password']; 
+  
     $sql = "UPDATE usuarios SET Nombres='$nombre', Apellidos='$apellido', Correo='$email', Fecha_de_nacimiento='$fechanac', Usuario='$usuario', Password='$password'  WHERE Id_usuarios=$id"; // Corregido nombres de las columnas y variables
 
-    // if ($conn->query($sql) === TRUE) { // Cambiado de '$conex' a '$conn'
-    //     echo "Usuario actualizado con éxito.";
-      
-    // } 
+
     if ($conn->query($sql) === TRUE) {
         $mensaje = "Usuario actualizado con éxito.";
         header("refresh:2;url=administradores.php");

@@ -1,3 +1,5 @@
+<?php include("templates/header.php");?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,27 +10,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-<!--
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> -->
 </head>
 
 
 
 <?php
-session_start();
 
 include('conexion.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Obtiene los datos del formulario
     $apellidos = $_POST['Apellidos'];
     $nombres = $_POST['Nombres'];
     $fechanac = date("d/m/y");
@@ -51,13 +42,12 @@ VALUES ('$nombres', '$apellidos', '$fechanac',  '$email', '$hashedPassword', '$u
        '<div class="alert alert-info" role="alert">
        Usuario agregado con éxito
 </div>';
-    } else {
+    }
+     else {
 
         echo "Error al agregar el usuario: " . $conex->error;
     }
 } 
-
-// $conex->close();
 
 
 if (isset($_POST['eliminarUsuario2'])) {
@@ -81,7 +71,6 @@ if (isset($_POST['eliminarUsuario2'])) {
         echo "Error al eliminar el usuario: " . $conex->error;
     }
 
-    // $conex->close();
 
 }
 
@@ -102,12 +91,9 @@ if (isset($_POST['editarUsuarioModal1'])) {
 
      $id_usuario = $_POST['ID'];
 
-    // Realizar una consulta SQL para obtener los datos actuales del usuario por su ID
-    // $sql = "SELECT * FROM usuarios WHERE id=$id_usuario";
-    // $resultado = $conex->query($sql);
 
     if ($resultado->num_rows > 0) {
-        // Mostrar los datos en el formulario
+ 
         $fila = $resultado->fetch_assoc();
         $nombre_actual = $fila['Nombres'];
         $apellido_actual = $fila['Apellidos'];
@@ -117,9 +103,8 @@ if (isset($_POST['editarUsuarioModal1'])) {
         $pass_actual = $fila['Password'];
 
 
-
     } else {
-        // No se encontraron datos del usuario
+     
         $nombre_actual = "";
     }
 
@@ -211,6 +196,7 @@ if (isset($_POST['editarUsuarioModal'])) {
 
 <div class="container mt-5">
 <h2>Administración de usuarios</h2>
+<a class="btn btn-danger" href="index.php">Volver a Inicio</a>
     <button type="button" class="btn btn-success offset-10" data-bs-toggle="modal" data-bs-target="#agregarModal">Agregar nuevo usuario</button>
 
     <table class="table mt-3">

@@ -1,8 +1,117 @@
-<?php include("templates/header.php"); ?>
+
+<?php
+ session_start();
+
+function mostrarBotonIniciarSesion() {
+    if (isset($_SESSION['Usuario']) ) {
+   
+      
+        echo '<style>#iniciarSesionCalculadora { display: none !important; }</style>';
+        echo '<style>#goCalculadora { display: block !important; }</style>';
+        echo '<style>#cerrarSesionCalculadora{ display: block !important; }</style>';
+
+        
+    } 
+    
+}
+
+mostrarBotonIniciarSesion();
+
+// Verificar si el usuario está conectado
+if (isset($_SESSION['Usuario']) ){
+    // El usuario está conectado
+    $nombre111 = $_SESSION['Usuario'];
+ 
+} else {
+    // El usuario no está conectado, redirigir a la página de inicio de sesión
+  echo "error";
+  ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+    
+}
+
+ if(isset($_POST['cerrarSesion'])) {
+    // Destruir todas las sesiones
+    session_destroy();
+    // Redirigir al usuario a la página de inicio o a donde desees
+    header("Location: index.php");
+    exit();
+}
+    
+
+ include("conexion.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
 
+       <header>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="ecoNet.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="ecoNet.css"></header>
+<main>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <i class="fas fa-tree" style="font-size: 24px; margin-right: 10px;"></i>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Index.php">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Nosotros.php">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Staff.php">Staff</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Noticias.php">Noticias de interés</a>
+                    </li>
+           
+                    <li class="nav-item dropdown" id="goCalculadora">
+          <a class="nav-link dropdown-toggle" href="calculadoraMain.php"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Calculá tu huella de carbono
+          </a>
+          <ul class="dropdown-menu" id="goCalculadoraMenu" aria-labelledby="navbarDropdown"> 
+             <li><a class="dropdown-item" href="calculadoraMain.php">Principal</a></li>
+             <li><hr class="dropdown-divider"></li>
+             <li><a class="dropdown-item" href="preguntasAgua.php">Agua</a></li>
+             <li><a class="dropdown-item" href="preguntasAlimentacion.php">Alimentación</a></li>
+            <li><a class="dropdown-item" href="preguntasCompras.php">Compras</a></li>
+                       <li><a class="dropdown-item" href="preguntasReciclaje.php">Reciclaje</a></li>
+            <li><a class="dropdown-item" href="preguntasTransporte.php">Transporte</a></li>
+            <li><a class="dropdown-item" href="preguntasVestido.php">Vestido</a></li>
+            <li><a class="dropdown-item" href="preguntasVivienda.php">Vivienda</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="pillsresultados.php">Resultados de tus consultas</a></li>
+            
+            
+           
+           
+         
+          </ul>
+        </li>
+
+                </ul>
+                <div><a class="btn btn-success" id="iniciarSesionCalculadora" href="Login.php" role="button" style="color: rgb(5, 5, 5); margin-left: 3px; border: white;">Iniciar sesión</a></div>
+                <div><form method="post" action="">
+                <button class="btn btn-danger" type="submit" name="cerrarSesion" id="cerrarSesionCalculadora" >Cerrar Sesión</button>
+            </form></div>
+                
+            </div>
+        </div>
+    </nav>
+</main>
 <head>
     <link rel="stylesheet" href="calculadoraMain.css">
     <title id="title">
@@ -13,7 +122,9 @@
 
 <div id="page-wrapper">
     <div class="container">
-        <p id="inicio" class="secciones">Bienvenido a EcoCalc, la calculadora de EcoNet: Tu Herramienta Personal para Medir la Huella de Carbono</p><br>
+        <p id="inicio" class="secciones">
+            <?php echo 'Bienvenid@ a EcoCalc, '  . $nombre111;?></p>
+            <p id="inicio" class="secciones">EcoCalc es la calculadora de EcoNet: Tu Herramienta Personal para Medir la Huella de Carbono</p><br>
         <div class="logo">
 
         </div>
@@ -81,6 +192,6 @@
         </body>
 
 
-        <?php include("templates/footer.php"); ?>
+        <?php include("templates/footer.php");?>
 
 </html>

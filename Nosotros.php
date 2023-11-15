@@ -1,4 +1,7 @@
-<?php include("templates/header.php");?>
+<?php include("templates/header.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
@@ -22,9 +25,7 @@
     <div id="page-wrapper">
 
 <body>
-    
 
-    <style>#cerrarSesionCalculadora {display: none}</style>
 
         <div class="container">
             <section>
